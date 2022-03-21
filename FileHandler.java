@@ -17,22 +17,43 @@ public class FileHandler
 
 	//Attributes 
 	BufferedReader reader;
+	String fileName;
+	String delimiter;
 	///
 	
 	
 	//Constructor class
-	public FileHandler()
+	//Constructor to get the name of the file for methods as well as to apply the correct delimiter depending on its suffix
+	public FileHandler(String fileName)
 	{	
-
+		this.fileName = fileName;
+		
+		//If else statements to automatically set the delimiter if the file ends in a comonly used file suffix
+		if (fileName.endsWith(".csv") == true)
+		{
+			this.delimiter = ",";
+		}
+		
+		else if (fileName.endsWith(".tsv") == true)
+		{
+			this.delimiter = "/t";
+		}
+		
+		//If no suffix is found delimiter is by default set to new line
+		else
+		{
+			this.delimiter = "/n";
+		}
+		
 	}
 	
 	//Methods
 	
 	/*Method to open a file and find a specific column of data which then gets cleaned to only accept 2 desired String values ([yes,no])
 	  These two values are then stored into an ArrayList stored inside colList.
-	  This method works for any delimiter needed for your specific file ["/n",",","/t",":"]
+	  This method works for any delimiter needed for your specific file ["/n",",","/t"]
 	  Make sure that a BufferedReader object is present outside of the method for the program to work*/ 
-	public void getCol(String delimiter, int ColNumb, String Value1, String Value2, String fileName, ArrayList<String> colList)
+	public void getCol(int ColNumb, String Value1, String Value2, ArrayList<String> colList)
 	{
 		String line = "";
 		//Try catch finally to make sure file is openable if openable finally to ensure file is closed after the operation
@@ -46,7 +67,7 @@ public class FileHandler
 				//For each line the row is split by the delimiter
 				String[] row = line.split(delimiter);
 				
-				
+				//Adds all desired values to the ArrayList inserted
 				if(row[ColNumb].equals(Value1)||row[ColNumb].equals(Value2))
 				{
 					colList.add(row[ColNumb]);
@@ -59,6 +80,7 @@ public class FileHandler
 		}
 		finally
 		{
+			//Try catch to stop an error if the file failed to open in the first place
 			try
 			{
 				reader.close();
@@ -69,5 +91,11 @@ public class FileHandler
 			}
 		}
 	
+	}
+	
+	//Function to set a custom delimiter in the case that the file has a delimiter such as [:, ;, " or anything alse
+	public void setDelimiter(String delimiter)
+	{
+		this.delimiter = delimiter;
 	}
 }
