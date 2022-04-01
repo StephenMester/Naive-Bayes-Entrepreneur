@@ -9,22 +9,23 @@ import java.util.ArrayList;
  * Class Description: Class to calculate multiple types of probability given a file with data to be used for Naive Bayes
 */
 
-public class ProbabilityCalculator extends FileHandler implements ProbabilityEquations
+public class ProbabilityCalculator implements ProbabilityEquations
 {
 	//Attributes 
 	//To avoid redundancy the answer list is stored inside a variable inside the class
 	ArrayList<String> Entrepreneur = new ArrayList<String>();
+	int resultCol;
 	////
 	
 	//Constructor that takes a file as well as an attribute ArrayList it then selects two inputted values to insert into this ArrayList
 	//To do this the constructor takes the column number of the attribute as well as the column number of the answer column to calculate probability
-	public ProbabilityCalculator(ArrayList<String> List1, String fileName, String attributeVal1, String attributeVal2 ,int attributeCol, int entrepreneurCol)
+	public ProbabilityCalculator(String fileName, int resultCol)
 	{
-		super(fileName);
 		FileHandler FH = new FileHandler(fileName);
-		FH.getCol(attributeCol, attributeVal1, attributeVal2, List1);
-		FH.getCol(entrepreneurCol, "Yes", "No", this.Entrepreneur);
+		this.resultCol = resultCol;
 		
+		//Hard codded Values **************************************************************
+		FH.getCol(resultCol, "Yes", "No", Entrepreneur);
 	}
 
 	//Methods
