@@ -67,8 +67,17 @@ public class FileHandler
 				//For each line the row is split by the delimiter
 				String[] row = line.split(delimiter);
 				
+				//Cleans data before adding it to List
+				if (row[ColNumb].startsWith("﻿"))
+				{
+					row[ColNumb] = row[ColNumb].replace("﻿","");
+				}
+				
+				row[ColNumb] = row[ColNumb].strip();
+				////
+				
 				//Adds all desired values to the ArrayList inserted
-				if(row[ColNumb].equals(Value1)||row[ColNumb].equals(Value2))
+				if(row[ColNumb].equals(Value1)||(row[ColNumb]).equals(Value2))
 				{
 					colList.add(row[ColNumb]);
 				}
@@ -92,6 +101,118 @@ public class FileHandler
 		}
 	
 	}
+	
+	
+	//Method to get each attribute in a row
+	public ArrayList<String> getrow(int RowNumb)
+	{
+		ArrayList<String> RowList = new ArrayList<>();
+		String line = "";
+		int CurrentRow = 0;
+		//Try catch finally to make sure file is openable if openable finally to ensure file is closed after the operation
+		try 
+		{
+			reader = new BufferedReader(new FileReader(fileName));
+			
+			//While loop to go through the file line by line till it reaches the end
+			while((line = reader.readLine()) != null)
+			{
+				//If statement to get the attributes of the row if the current row is the desired row
+				if (CurrentRow == RowNumb)
+				{
+					
+					//Splits the row into its attributes
+					String[] row = line.split(delimiter);
+					
+					//for loop to add all the attributes inside row to a temporary list
+					for (int i = 0; i < row.length; i++)
+					{
+						
+						//Cleans data before inserting it into rowlist
+						if (row[i].startsWith("﻿"))
+						{
+							row[i] = row[i].replace("﻿","");
+						}
+						
+						row[i] = row[i].strip();
+						////
+						
+						//checks if there is anything inside row and if so adds it to rowlist
+						if (row[i].equals(null) == false)
+						{
+							RowList.add(row[i]);
+						}
+					}
+					//returns rowList regardless if rowlist is null error occured
+					return RowList;
+				}
+				
+				//If it is not the desired row current row gets iterated
+				CurrentRow += 1;
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			//Try catch to stop an error if the file failed to open in the first place
+			try
+			{
+				reader.close();
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		return null;
+	
+	}
+	
+	
+	//Method to get the size of a file going through the file line by line
+	public int getSize()
+	{
+
+		int count = 0;
+		String line = "";
+
+		//Try catch finally to make sure file is openable if openable finally to ensure file is closed after the operation
+		try 
+		{
+			reader = new BufferedReader(new FileReader(fileName));
+			
+			//While loop to go through the file line by line till it reaches the end
+			while((line = reader.readLine()) != null)
+			{
+				//Count to get the amount of lines in the file
+				count +=1;
+			}
+			return count;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			//Try catch to stop an error if the file failed to open in the first place
+			try
+			{
+				reader.close();
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		return -1;
+	
+	}
+				
+	
 	
 	//Function to set a custom delimiter in the case that the file has a delimiter such as [:, ;, " or anything alse
 	public void setDelimiter(String delimiter)

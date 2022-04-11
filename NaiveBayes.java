@@ -42,7 +42,6 @@ public class NaiveBayes extends ProbabilityCalculator
 		//For loop to initialize the frequency of all variables given
 		for (int i = 0; i<numAttributes; i++)
 		{
-			int break_check = 0;
 			
 			//Temporary array created to store values
 			ArrayList<String> arr = new ArrayList<String>();
@@ -58,22 +57,17 @@ public class NaiveBayes extends ProbabilityCalculator
 			{
 				
 				//For loop incrementing in pairs of 2 to check for each pair of values
-				for (int j = 2; i<Values.size(); j+=2)
+				for (int j = 2; j<Values.size(); j+=2)
 				{
 					//File handler takes 2 values from values array and stores into temp array
+					//System.out.println(Values.get(j)+Values.get(j+1));
 					FH.getCol(i, Values.get(j), Values.get(j+1), arr);
 					
-					//if to check if File handler found any values
 					if (arr.isEmpty() == false)
 					{
-						//Local value to break out of both if and for to save computing power
-						break_check = 1;
 						break;
 					}
 					
-					//if check to ensure it only breaks out of for if values are found
-					if (break_check == 1)
-						break;
 				}
 			}
 			
@@ -81,13 +75,6 @@ public class NaiveBayes extends ProbabilityCalculator
 			if (arr.isEmpty() == false)
 			{
 				AllAttributes.add(arr);
-			}
-			//Else statement to send debug message if values not found
-			else
-			{
-				//number of attributes decrements by one
-				numAttributes -= 1;
-				System.out.println("Attribute not found");
 			}
 		}
 	}
@@ -99,7 +86,7 @@ public class NaiveBayes extends ProbabilityCalculator
 		ArrayList<Double> probabilityList = new ArrayList<>();
 		
 		//For loop to cycle through all of the attributes
-		for (int i = 0; i<numAttributes; i++)
+		for (int i = 0; i<AllAttributes.size(); i++)
 		{
 			//Counter to break when both probabilities are found then reset to 0
 			int counter = 0;
@@ -107,12 +94,11 @@ public class NaiveBayes extends ProbabilityCalculator
 			//For loop to cycle through all the values till it find 2 that match
 			for(int j = 0; j<Values.size(); j++)
 			{
-				
-				//Initializes temporary probability var and calls GetProbability from Probability Calculator
-				double probability = super.GetProbability(Values.get(j),AllAttributes.get(i),AnswerVal);
-				
-				//If to check that the value is present 
-				if (probability != 0)
+
+				Double probability = super.GetProbability(Values.get(j),AllAttributes.get(i),AnswerVal);
+
+				//Checks that probability has a value ie its a valid value
+				if (probability.toString() != "NaN")
 				{
 					//Adds probability to the temp array and increments counter
 					probabilityList.add(probability);
@@ -121,6 +107,7 @@ public class NaiveBayes extends ProbabilityCalculator
 					//Breaks out of loop if coubter is 2
 					if (counter == 2)
 					{
+						//return probabilityList;
 						break;
 					}
 				}
@@ -130,58 +117,11 @@ public class NaiveBayes extends ProbabilityCalculator
 				{
 					break;
 				}
-			}
+			}	
 		}
-		System.out.println(probabilityList);
+
+		// Returns list of all probabilities given answerval
+		System.out.println("This: "+probabilityList);
 		return probabilityList;
 	}
-	
-	public ArrayList<String> calculateLikeliehood()
-	{
-		ArrayList<String> PersonAttributes = new ArrayList<>();
-		Scanner sc = new Scanner(System.in);
-		boolean valid = false;
-		for (int i = 0; i<numAttributes; i++)
-		{
-			String answer;
-			do
-			{
-				System.out.println("Enter attribute "+i);
-				answer = sc.next();
-				answer.strip();
-				
-				valid = false;
-				String value1 = null;
-				String value2 = null;
-				
-				while (value1 == null || value2 == null)
-				{
-					value1 = AllAttributes.get(i).get(0);
-					
-					for (int j = 0;j<(AllAttributes.get(i)).size();j++)
-					{
-	
-						if(value1.equals(AllAttributes.get(i).get(j)) == false)
-						{
-							value2 = AllAttributes.get(i).get(j);
-							break;
-						}
-						
-					}
-				}
-				
-				if (answer.equals(value1) || answer.equals(value2))
-				{
-					valid = true;
-					PersonAttributes.add(answer);
-					break;
-				}
-				
-				
-			}
-			while (valid == false);
-		}
-		return PersonAttributes;
-	}
-
 }
