@@ -1,5 +1,6 @@
 package Program;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /* Author: Stephen Mester C20483376
@@ -19,6 +20,8 @@ public class NaiveBayesTraining extends NaiveBayesLogic
 	ArrayList<String> test = new ArrayList<>();
 	ArrayList<Double> probYes = new ArrayList<>();
 	ArrayList<Double> probNo = new ArrayList<>();
+	
+	double accuracy = 0.0;
 	//
 	
 	//Constuctor to call naivebayesLogic and to calculate the probabilities given the training data called fileName
@@ -47,7 +50,6 @@ public class NaiveBayesTraining extends NaiveBayesLogic
 		String guess;
 		String actual;
 		double correct = 0;
-		double accuracy;
 		
 		//For loop to iterate though every line in fileName
 		for (int i = 0; i < file.getSize(); i++)
@@ -74,8 +76,17 @@ public class NaiveBayesTraining extends NaiveBayesLogic
 		
 		//calculates accuracy by dividing amount system got correct compared to the total amount
 		accuracy = correct/(file.getSize());
-		System.out.println(accuracy);
+		DecimalFormat df = new DecimalFormat("#.##");
+		System.out.println(fileName+" Accuracy: "+df.format(accuracy*100)+"%");
+		
+		//Returns temp list
 		return tempList;
+	}
+	
+	//Method to get accuracy value
+	public double getAccuracy()
+	{
+		return accuracy;
 	}
 	
 }

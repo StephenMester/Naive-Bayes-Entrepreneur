@@ -26,7 +26,7 @@ public class ProbabilityCalculator extends FileHandler implements ProbabilityEqu
 		super(fileName);
 		this.resultCol = resultCol;
 		
-		//Hard codded Values **************************************************************
+		//Hard codded Values 
 		//Sets the euntrepeneur list to contain both desired values
 		super.getCol(resultCol, "Yes", "No", Entrepreneur);
 		
@@ -59,7 +59,6 @@ public class ProbabilityCalculator extends FileHandler implements ProbabilityEqu
 		}
 		
 		//Returns the probability of the attribute value occuring given the desired entrepreneur value
-		//System.out.println(count/total);
 		return (count/total);
 		
 	}

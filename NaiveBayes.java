@@ -60,7 +60,6 @@ public class NaiveBayes extends ProbabilityCalculator
 				for (int j = 2; j<Values.size(); j+=2)
 				{
 					//File handler takes 2 values from values array and stores into temp array
-					//System.out.println(Values.get(j)+Values.get(j+1));
 					FH.getCol(i, Values.get(j), Values.get(j+1), arr);
 					
 					if (arr.isEmpty() == false)
@@ -107,7 +106,6 @@ public class NaiveBayes extends ProbabilityCalculator
 					//Breaks out of loop if coubter is 2
 					if (counter == 2)
 					{
-						//return probabilityList;
 						break;
 					}
 				}
@@ -121,7 +119,6 @@ public class NaiveBayes extends ProbabilityCalculator
 		}
 
 		// Returns list of all probabilities given answerval
-		System.out.println("This: "+probabilityList);
 		return probabilityList;
 	}
 }
